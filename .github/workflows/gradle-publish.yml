@@ -22,6 +22,7 @@ env:
   PORT:     ${{ secrets.PORT }}
   INSTANCE_PATH: ./savemyreceipt
   IMAGE_NAME: shinsion/savemyreceipt-server
+  GOOGLE_APPLICATION_CREDENTIALS: src/main/resources/${{ secrets.GOOGLE_CREDENTIALS_NAME }}
 
 
 jobs:
@@ -45,6 +46,11 @@ jobs:
         mkdir -p ./src/main/resources
         cd ./src/main/resources
         echo "${{ secrets.APPLICATION }}" | base64 -d > application.yml
+
+    - name: Create Google Credentials JSON
+      run: |
+        cd ./src/main/resources
+        echo "${{ secrets.GOOGLE_CREDENTIALS }}" | base64 -d > "${{ secrets.GOOGLE_CREDENTIALS_NAME }}"
 
     - name: Build with Gradle
       run: ./gradlew clean build

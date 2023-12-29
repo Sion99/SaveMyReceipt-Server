@@ -12,6 +12,7 @@ public class UserDetailResponseDto {
     private Long id;
     private String email;
     private String name;
+    private String groupName;
     private Authority authority;
 
     public static UserDetailResponseDto convertToDto(User user) {
@@ -19,6 +20,7 @@ public class UserDetailResponseDto {
             .id(user.getId())
             .email(user.getEmail())
             .name(user.getName())
+            .groupName(user.getGroup() == null ? null : user.getGroup().getName())
             .authority(user.getAuthority())
             .build();
     }

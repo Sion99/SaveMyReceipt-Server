@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import savemyreceipt.server.DTO.ApiResponseDto;
+import savemyreceipt.server.DTO.receipt.response.ReceiptResponseDto;
 import savemyreceipt.server.DTO.user.response.UserDetailResponseDto;
 import savemyreceipt.server.exception.SuccessStatus;
 import savemyreceipt.server.service.UserService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -27,6 +30,11 @@ public class UserController {
     @GetMapping
     public ApiResponseDto<UserDetailResponseDto> getUserDetail(@Parameter(hidden = true) @AuthenticationPrincipal User user) {
         return ApiResponseDto.success(SuccessStatus.GET_USER_DETAIL_SUCCESS, userService.getUserDetail(user.getUsername()));
+    }
+
+    @GetMapping("/receipts")
+    public ApiResponseDto<List<ReceiptResponseDto>> getUserReceipts(@Parameter(hidden = true) @AuthenticationPrincipal User user) {
+        return ApiResponseDto.success(SuccessStatus.GET_USER_RECEIPT_SUCCESS, userService.getUserReceipts(user.getUsername()));
     }
 
 }

@@ -1,5 +1,7 @@
 package savemyreceipt.server.config;
 
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +18,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import savemyreceipt.server.jwt.JwtAccessDeniedHandler;
 import savemyreceipt.server.jwt.JwtAuthenticationEntryPoint;
 import savemyreceipt.server.jwt.TokenProvider;
-import savemyreceipt.server.oauth2.CustomOAuth2UserService;
-import savemyreceipt.server.oauth2.OAuth2LoginFailureHandler;
-import savemyreceipt.server.oauth2.OAuth2LoginSuccessHandler;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +34,11 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public Storage storage() {
+        return StorageOptions.getDefaultInstance().getService();
     }
 
     @Bean
