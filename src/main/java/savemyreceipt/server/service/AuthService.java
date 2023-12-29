@@ -55,29 +55,23 @@ public class AuthService {
 
     @Transactional
     public TokenDto login(LoginRequestDto loginRequestDto) {
-        log.info("loginRequestDto: {}", loginRequestDto);
-
         try {
             // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
             UsernamePasswordAuthenticationToken authenticationToken = loginRequestDto.toAuthentication();
-            log.info("authenticationToken: {}", authenticationToken);
 
             // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
             //    authenticate 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨
             Authentication authentication = authenticationManagerBuilder.getObject()
                 .authenticate(authenticationToken);
-            log.info("authentication: {}", authentication);
 
             // 3. 인증 정보를 기반으로 JWT 토큰 생성
             TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
-            log.info("tokenDto: {}", tokenDto);
 
             // 4. RefreshToken 저장
             redisTemplate.opsForValue().set("RefreshToken:" + authentication.getName(),
                 tokenDto.getRefreshToken(),
                 tokenProvider.getRefreshTokenExpireTime(),
                 TimeUnit.MILLISECONDS);
-            log.info("redisTemplate: {}", redisTemplate);
 
             return tokenDto;
         } catch (AuthenticationException e) {
@@ -87,5 +81,38 @@ public class AuthService {
             throw new CustomException(ErrorStatus.INTERNAL_SERVER_ERROR,
                 ErrorStatus.INTERNAL_SERVER_ERROR.getMessage());
         }
+    }
+
+    @Transactional
+    public TokenDto reissue(String refreshToken) {
+
+        // 1. Refresh Token 검증
+        if (!tokenProvider.validateToken(refreshToken)) {
+            throw new NotFoundException(ErrorStatus.EXPIRED_TOKEN,
+                ErrorStatus.EXPIRED_TOKEN.getMessage());
+        }
+
+        // 2. Access Token 에서 Member ID 가져오기
+        Authentication authentication = tokenProvider.getAuthentication(refreshToken);
+        // 3. 저장소에서 Member ID 를 기반으로 Refresh Token 값 가져옴
+        String refreshTokenValue = redisTemplate.opsForValue()
+            .get("RefreshToken:" + authentication.getName());
+        // 4. Refresh Token 일치하는지 검사
+        if (!refreshToken.equals(refreshTokenValue)) {
+            throw new NotFoundException(ErrorStatus.INVALID_TOKEN,
+                ErrorStatus.INVALID_TOKEN.getMessage());
+        }
+
+        // 5. 새로운 토큰 생성
+        TokenDto newTokenDto = tokenProvider.generateTokenDto(authentication);
+
+        // 6. 저장소 Refresh Token 갱신
+        redisTemplate.opsForValue().set("RefreshToken:" + authentication.getName(),
+            newTokenDto.getRefreshToken(),
+            tokenProvider.getRefreshTokenExpireTime(),
+            TimeUnit.MILLISECONDS);
+
+        // 토큰 발급
+        return newTokenDto;
     }
 }

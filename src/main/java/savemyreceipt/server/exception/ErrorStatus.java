@@ -14,6 +14,8 @@ public enum ErrorStatus {
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "BAD_REQUEST"),
     WRONG_LOGIN_INFO(HttpStatus.BAD_REQUEST, "WRONG_LOGIN_INFO"),
     ALREADY_EXISTING_EMAIL(HttpStatus.BAD_REQUEST, "ALREADY_EXISTING_EMAIL"),
+    INVALID_TOKEN(HttpStatus.BAD_REQUEST, "INVALID_TOKEN"),
+    EXPIRED_TOKEN(HttpStatus.BAD_REQUEST, "EXPIRED_TOKEN"),
 
     /**
      * 401 UNAUTHORIZED
@@ -22,6 +24,7 @@ public enum ErrorStatus {
     /**
      * 403 FORBIDDEN
      */
+    NOT_ADMIN(HttpStatus.FORBIDDEN, "NOT_ADMIN"),
 
     /**
      * 404 NOT_FOUND

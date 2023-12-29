@@ -16,10 +16,6 @@ public class UserService {
 
     public UserDetailResponseDto getUserDetail(String email) {
         User user = userRepository.getUserByEmail(email);
-        return UserDetailResponseDto.builder()
-            .email(user.getEmail())
-            .name(user.getName())
-            .authority(user.getAuthority())
-            .build();
+        return UserDetailResponseDto.convertToDto(user);
     }
 }

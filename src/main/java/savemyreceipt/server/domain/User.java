@@ -16,6 +16,7 @@ public class User extends AuditingTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     private String email;
@@ -31,6 +32,10 @@ public class User extends AuditingTimeEntity {
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private Group group;
+
     @Builder
     public User(String email, String name, String password, String oauth2Id, String spreadSheetToken,
                 Authority authority) {
@@ -44,5 +49,9 @@ public class User extends AuditingTimeEntity {
 
     public void changeAuthority(Authority authority) {
         this.authority = authority;
+    }
+
+    public void joinGroup(Group group) {
+        this.group = group;
     }
 }

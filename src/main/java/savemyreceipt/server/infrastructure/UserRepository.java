@@ -6,6 +6,7 @@ import savemyreceipt.server.domain.User;
 import savemyreceipt.server.exception.ErrorStatus;
 import savemyreceipt.server.exception.model.NotFoundException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -22,4 +23,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             () -> new NotFoundException(ErrorStatus.USER_NOT_FOUND,
                 ErrorStatus.USER_NOT_FOUND.getMessage()));
     }
+
+    List<User> findByGroupId(Long groupId);
+
 }
