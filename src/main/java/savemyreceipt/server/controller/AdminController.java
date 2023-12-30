@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import savemyreceipt.server.DTO.ApiResponseDto;
 import savemyreceipt.server.DTO.group.request.GroupRequestDto;
 import savemyreceipt.server.DTO.group.response.GroupResponseDto;
+import savemyreceipt.server.DTO.receipt.response.ReceiptResponseDto;
 import savemyreceipt.server.DTO.user.response.UserDetailResponseDto;
 import savemyreceipt.server.exception.SuccessStatus;
 import savemyreceipt.server.service.AdminService;
@@ -29,6 +30,18 @@ public class AdminController {
     public ApiResponseDto<List<UserDetailResponseDto>> getUserList(
         @Parameter(hidden = true) @AuthenticationPrincipal User user) {
         return ApiResponseDto.success(SuccessStatus.GET_USER_DETAIL_SUCCESS, adminService.getUserList(user.getUsername()));
+    }
+
+    @GetMapping("/group")
+    public ApiResponseDto<List<GroupResponseDto>> getGroupList(
+        @Parameter(hidden = true) @AuthenticationPrincipal User user) {
+        return ApiResponseDto.success(SuccessStatus.GET_GROUP_LIST_SUCCESS, adminService.getGroupList(user.getUsername()));
+    }
+
+    @GetMapping("/receipt")
+    public ApiResponseDto<List<ReceiptResponseDto>> getReceiptList(
+        @Parameter(hidden = true) @AuthenticationPrincipal User user) {
+        return ApiResponseDto.success(SuccessStatus.GET_RECEIPT_LIST_SUCCESS, adminService.getReceiptList(user.getUsername()));
     }
 
     @PostMapping("/create-group")

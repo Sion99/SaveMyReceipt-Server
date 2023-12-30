@@ -49,9 +49,9 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
 
 	// Google Cloud Storage
+	// **version 1.2.8 필수! 이렇게 안하면 빌드 에러남**
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter', version: '1.2.8.RELEASE'
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-storage', version: '1.2.8.RELEASE'
-
 	// Google Cloud Vision
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter-vision', version: '1.2.8.RELEASE'
 }
