@@ -41,7 +41,6 @@ public class TokenProvider {
             String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
-            log.info("authorities: {}", authorities);
             long now = (new Date()).getTime();
 
             // access token
@@ -52,7 +51,7 @@ public class TokenProvider {
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
-            log.info("accessToken: {}", accessToken);
+
             // refresh token
             String refreshToken = Jwts.builder()
                 .setSubject(authentication.getName())
@@ -60,7 +59,7 @@ public class TokenProvider {
                 .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
-            log.info("refreshToken: {}", refreshToken);
+
             return TokenDto.builder()
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)

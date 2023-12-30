@@ -3,6 +3,8 @@ package savemyreceipt.server.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import savemyreceipt.server.DTO.receipt.ReceiptUpdateRequestDto;
 import savemyreceipt.server.common.domain.AuditingTimeEntity;
 
@@ -12,6 +14,8 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE receipt SET is_deleted = true WHERE receipt_id = ?")
+@Where(clause = "is_deleted = false")
 public class Receipt extends AuditingTimeEntity {
 
     @Id
@@ -45,6 +49,11 @@ public class Receipt extends AuditingTimeEntity {
     @JoinColumn(name = "group_id")
     private Group group;
 
+    private boolean isChecked = false;
+
+    @Column(name = "is_deleted")
+    private boolean isDeleted = false;
+
     @Builder
     public Receipt(String imageUri, String category, String description, String note, LocalDate purchaseDate, Long price,
                    User user, Group group) {
@@ -63,5 +72,10 @@ public class Receipt extends AuditingTimeEntity {
         this.description = receiptUpdateRequestDto.getDescription();
         this.note = receiptUpdateRequestDto.getNote();
         this.price = receiptUpdateRequestDto.getPrice();
+        check();
+    }
+
+    private void check() {
+        this.isChecked = true;
     }
 }

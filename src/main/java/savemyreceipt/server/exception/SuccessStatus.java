@@ -17,6 +17,7 @@ public enum SuccessStatus {
     GET_USER_DETAIL_SUCCESS(HttpStatus.OK, "유저 정보 조회 성공"),
     GET_GROUP_SUCCESS(HttpStatus.OK, "그룹 정보 조회 성공"),
     JOIN_GROUP_SUCCESS(HttpStatus.OK, "그룹 가입 성공"),
+    RECEIPT_INFO_GET_SUCCESS(HttpStatus.OK, "영수증 정보 조회 성공"),
     RECEIPT_INFO_UPDATE_SUCCESS(HttpStatus.OK, "영수증 정보 업데이트 성공"),
     GET_GROUP_MEMBER_SUCCESS(HttpStatus.OK, "그룹 멤버 조회 성공"),
     GET_GROUP_RECEIPT_SUCCESS(HttpStatus.OK, "그룹 영수증 조회 성공"),

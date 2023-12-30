@@ -49,11 +49,11 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
 
 	// Google Cloud Storage
-	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter', version: '1.2.5.RELEASE'
-	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-storage', version: '1.2.5.RELEASE'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter', version: '1.2.8.RELEASE'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-storage', version: '1.2.8.RELEASE'
 
 	// Google Cloud Vision
-	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter-vision', version: '1.2.5.RELEASE'
+	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter-vision', version: '1.2.8.RELEASE'
 }
 
 tasks.named('test') {

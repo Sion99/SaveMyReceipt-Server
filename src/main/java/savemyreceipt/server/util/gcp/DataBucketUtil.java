@@ -3,6 +3,7 @@ package savemyreceipt.server.util.gcp;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +42,21 @@ public class DataBucketUtil {
         Blob blob = storage.create(blobInfo, file.getBytes());
         log.info(blob.getMediaLink());
         return bucketName + "/" + uuid;
+    }
+
+    public void deleteFromBucket(String uuid) {
+        Blob blob = storage.get(bucketName, uuid);
+        if (blob == null) {
+            log.info("The object " + uuid + " wasn't found in " + bucketName);
+            return;
+        }
+
+        // Optional: set a generation-match precondition to avoid potential race
+        // conditions and data corruptions. The request to upload returns a 412 error if
+        // the object's generation number does not match your precondition.
+        Storage.BlobSourceOption precondition = Storage.BlobSourceOption.generationMatch(blob.getGeneration());
+        storage.delete(bucketName, uuid, precondition);
+        log.info("The object " + uuid + " was deleted from " + bucketName);
     }
 
 

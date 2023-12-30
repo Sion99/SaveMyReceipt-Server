@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import savemyreceipt.server.DTO.ApiResponseDto;
 import savemyreceipt.server.DTO.receipt.ReceiptUpdateRequestDto;
+import savemyreceipt.server.DTO.receipt.response.ReceiptResponseDto;
 import savemyreceipt.server.exception.SuccessStatus;
 import savemyreceipt.server.service.ReceiptService;
 
@@ -31,11 +32,26 @@ public class ReceiptController {
         return ApiResponseDto.success(SuccessStatus.IMAGE_UPLOAD_SUCCESS, receiptService.upload(user.getUsername(), image));
     }
 
+    @GetMapping("/info/{receiptId}")
+    public ApiResponseDto<ReceiptResponseDto> getReceipt(
+        @Parameter(hidden = true) @AuthenticationPrincipal User user,
+        @PathVariable Long receiptId) {
+        return ApiResponseDto.success(SuccessStatus.RECEIPT_INFO_GET_SUCCESS, receiptService.getReceipt(user.getUsername(), receiptId));
+    }
+
     @PostMapping("/update")
     public ApiResponseDto<?> update(
         @Parameter(hidden = true) @AuthenticationPrincipal User user,
         @RequestBody ReceiptUpdateRequestDto receiptUpdateRequestDto) {
         receiptService.update(user.getUsername(), receiptUpdateRequestDto);
+        return ApiResponseDto.success(SuccessStatus.RECEIPT_INFO_UPDATE_SUCCESS, SuccessStatus.RECEIPT_INFO_UPDATE_SUCCESS.getMessage());
+    }
+
+    @DeleteMapping("/delete/{receiptId}")
+    public ApiResponseDto<?> delete(
+        @Parameter(hidden = true) @AuthenticationPrincipal User user,
+        @PathVariable Long receiptId) {
+        receiptService.delete(user.getUsername(), receiptId);
         return ApiResponseDto.success(SuccessStatus.RECEIPT_INFO_UPDATE_SUCCESS, SuccessStatus.RECEIPT_INFO_UPDATE_SUCCESS.getMessage());
     }
 }
