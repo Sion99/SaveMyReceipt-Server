@@ -3,6 +3,7 @@ package savemyreceipt.server.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import savemyreceipt.server.DTO.receipt.ReceiptUpdateRequestDto;
 import savemyreceipt.server.common.domain.AuditingTimeEntity;
 
 import javax.persistence.*;
@@ -55,5 +56,12 @@ public class Receipt extends AuditingTimeEntity {
         this.price = price;
         this.user = user;
         this.group = group;
+    }
+
+    public void update(ReceiptUpdateRequestDto receiptUpdateRequestDto) {
+        this.category = receiptUpdateRequestDto.getCategory();
+        this.description = receiptUpdateRequestDto.getDescription();
+        this.note = receiptUpdateRequestDto.getNote();
+        this.price = receiptUpdateRequestDto.getPrice();
     }
 }

@@ -8,6 +8,7 @@ import savemyreceipt.server.DTO.receipt.ReceiptUpdateRequestDto;
 import savemyreceipt.server.domain.Receipt;
 import savemyreceipt.server.domain.User;
 import savemyreceipt.server.exception.ErrorStatus;
+import savemyreceipt.server.exception.model.CustomException;
 import savemyreceipt.server.exception.model.NotFoundException;
 import savemyreceipt.server.infrastructure.ReceiptRepository;
 import savemyreceipt.server.infrastructure.UserRepository;
@@ -47,6 +48,13 @@ public class ReceiptService {
     @Transactional
     public void update(String username, ReceiptUpdateRequestDto receiptUpdateRequestDto) {
         User user = userRepository.getUserByEmail(username);
+        Receipt receipt = receiptRepository.getReceiptById(receiptUpdateRequestDto.getId());
+
+        if (!receipt.getUser().equals(user)) {
+            throw new CustomException(ErrorStatus.RECEIPT_NOT_AUTHORIZED, ErrorStatus.RECEIPT_NOT_AUTHORIZED.getMessage());
+        }
+        receipt.update(receiptUpdateRequestDto);
+        receiptRepository.save(receipt);
     }
 
 }

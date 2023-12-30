@@ -7,6 +7,8 @@ import java.time.LocalDate;
 @Getter
 public class ReceiptUpdateRequestDto {
 
+    private Long id;
+
     private String category;
 
     private String description;
@@ -17,7 +19,8 @@ public class ReceiptUpdateRequestDto {
 
     private LocalDate purchaseDate;
 
-    public ReceiptUpdateRequestDto(String category, String description, String note, Long price) {
+    public ReceiptUpdateRequestDto(Long id, String category, String description, String note, Long price) {
+        this.id = id;
         this.category = category;
         this.description = description;
         this.note = note;

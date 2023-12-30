@@ -23,6 +23,7 @@ public enum ErrorStatus {
     /**
      * 401 UNAUTHORIZED
      */
+    RECEIPT_NOT_AUTHORIZED(HttpStatus.UNAUTHORIZED, "RECEIPT_NOT_AUTHORIZED"),
 
     /**
      * 403 FORBIDDEN
@@ -34,6 +35,7 @@ public enum ErrorStatus {
      */
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_NOT_FOUND"),
     GROUP_NOT_FOUND(HttpStatus.NOT_FOUND, "GROUP_NOT_FOUND"),
+    RECEIPT_NOT_FOUND(HttpStatus.NOT_FOUND, "RECEIPT_NOT_FOUND"),
 
     /**
      * 500 INTERNAL_SERVER_ERROR
