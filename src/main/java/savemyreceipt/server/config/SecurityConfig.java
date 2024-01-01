@@ -82,6 +82,7 @@ public class SecurityConfig {
 
         corsConfiguration.setAllowedOriginPatterns(Arrays.asList(
             "http://localhost:3000",
+            "http://localhost:5173",
             "https://*.sions.me",
             "https://sions.me",
             "https://sion99.github.io"
