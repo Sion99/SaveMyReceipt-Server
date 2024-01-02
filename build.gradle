@@ -54,6 +54,10 @@ dependencies {
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-storage', version: '1.2.8.RELEASE'
 	// Google Cloud Vision
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter-vision', version: '1.2.8.RELEASE'
+	// Google Natural Language
+	implementation 'com.google.cloud:google-cloud-language:2.33.0'
+
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0'
 }
 
 tasks.named('test') {

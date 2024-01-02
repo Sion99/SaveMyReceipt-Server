@@ -21,6 +21,8 @@ public class ImageReaderUtil {
 
     private final ResourceLoader resourceLoader;
     private final CloudVisionTemplate cloudVisionTemplate;
+    private final static String IMAGE_URI_PREFIX = "https://storage.googleapis.com/";
+    private static final String CLOUD_STORAGE_URI_PREFIX = "gs://";
 
     @Autowired
     public ImageReaderUtil(ResourceLoader resourceLoader, CloudVisionTemplate cloudVisionTemplate) {
@@ -29,8 +31,9 @@ public class ImageReaderUtil {
     }
 
     public Map<String, Float> extractLabels(String imageUri) {
+        log.info(switchToGcsPath(imageUri));
         AnnotateImageResponse response = cloudVisionTemplate.analyzeImage(
-            resourceLoader.getResource(imageUri), Feature.Type.LABEL_DETECTION);
+            resourceLoader.getResource(switchToGcsPath(imageUri)), Feature.Type.LABEL_DETECTION);
 
         return response.getLabelAnnotationsList().stream()
             .collect(
@@ -40,12 +43,16 @@ public class ImageReaderUtil {
                     (u, v) -> {
                         throw new CustomException(ErrorStatus.GOOGLE_VISION_API_DUPLICATE_KEY_ERROR,
                             ErrorStatus.GOOGLE_VISION_API_DUPLICATE_KEY_ERROR.getMessage());
-                    }
-                    , LinkedHashMap::new));
+                        }, LinkedHashMap::new));
     }
 
-    public String extractText(String imageUrl) {
-        return cloudVisionTemplate.extractTextFromImage(resourceLoader.getResource(imageUrl));
+    public String extractText(String imageUri) {
+        log.info(switchToGcsPath(imageUri));
+        return cloudVisionTemplate.extractTextFromImage(resourceLoader.getResource(switchToGcsPath(imageUri)));
+    }
+
+    private String switchToGcsPath(String imageUri) {
+        return imageUri.replace(IMAGE_URI_PREFIX, CLOUD_STORAGE_URI_PREFIX);
     }
 
 

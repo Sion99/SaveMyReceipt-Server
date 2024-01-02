@@ -7,6 +7,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import savemyreceipt.server.DTO.receipt.ReceiptUpdateRequestDto;
 import savemyreceipt.server.common.domain.AuditingTimeEntity;
+import savemyreceipt.server.util.gcp.ReceiptInfo;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -65,6 +66,11 @@ public class Receipt extends AuditingTimeEntity {
         this.price = price;
         this.user = user;
         this.group = group;
+    }
+
+    public void autoFill(ReceiptInfo receiptInfo) {
+        this.price = receiptInfo.getTotalPrice();
+        this.purchaseDate = receiptInfo.getPurchaseDate();
     }
 
     public void update(ReceiptUpdateRequestDto receiptUpdateRequestDto) {

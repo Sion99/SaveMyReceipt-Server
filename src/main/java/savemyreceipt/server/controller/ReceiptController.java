@@ -26,7 +26,7 @@ public class ReceiptController {
     private final ReceiptService receiptService;
 
     @PostMapping("/upload")
-    public ApiResponseDto<String> upload(
+    public ApiResponseDto<ReceiptResponseDto> upload(
         @Parameter(hidden = true) @AuthenticationPrincipal User user,
         @RequestParam(name = "image") MultipartFile image) throws IOException {
         return ApiResponseDto.success(SuccessStatus.IMAGE_UPLOAD_SUCCESS, receiptService.upload(user.getUsername(), image));
